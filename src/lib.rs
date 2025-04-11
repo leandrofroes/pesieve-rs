@@ -19,7 +19,7 @@ pub enum OutputFilter {
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum ShellcMode {
-    SHELLC_NONE = 0,
+	SHELLC_NONE = 0,
 	SHELLC_PATTERNS = 1,
 	SHELLC_STATS = 2,
 	SHELLC_PATTERNS_OR_STATS = 3,
@@ -30,7 +30,7 @@ pub enum ShellcMode {
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum ObfuscMode {
-    OBFUSC_NONE = 0,
+	OBFUSC_NONE = 0,
 	OBFUSC_STRONG_ENC = 1,
 	OBFUSC_WEAK_ENC = 2,
 	OBFUSC_ANY = 3,
@@ -40,7 +40,7 @@ pub enum ObfuscMode {
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum ImpRecMode {
-    PE_IMPREC_NONE = 0,
+	PE_IMPREC_NONE = 0,
 	PE_IMPREC_AUTO = 1,
 	PE_IMPREC_UNERASE = 2,
 	PE_IMPREC_REBUILD0 = 3,
@@ -52,7 +52,7 @@ pub enum ImpRecMode {
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum DumpMode {
-    PE_DUMP_AUTO = 0,
+	PE_DUMP_AUTO = 0,
 	PE_DUMP_VIRTUAL = 1,
 	PE_DUMP_UNMAP = 2,
 	PE_DUMP_REALIGN = 3,
@@ -62,7 +62,7 @@ pub enum DumpMode {
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum IatScanMode {
-    PE_IATS_NONE = 0,
+	PE_IATS_NONE = 0,
 	PE_IATS_CLEAN_SYS_FILTERED = 1,
 	PE_IATS_ALL_SYS_FILTERED = 2,
 	PE_IATS_UNFILTERED = 3,
@@ -72,7 +72,7 @@ pub enum IatScanMode {
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum DotnetPolicy {
-    PE_DNET_NONE = 0,
+	PE_DNET_NONE = 0,
 	PE_DNET_SKIP_MAPPING = 1,
 	PE_DNET_SKIP_SHC = 2,
 	PE_DNET_SKIP_HOOKS = 3,
@@ -83,7 +83,7 @@ pub enum DotnetPolicy {
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum DataScanMode {
-    PE_DATA_NO_SCAN = 0,
+	PE_DATA_NO_SCAN = 0,
 	PE_DATA_SCAN_DOTNET = 1,
 	PE_DATA_SCAN_NO_DEP = 2,
 	PE_DATA_SCAN_ALWAYS = 3,
@@ -95,7 +95,7 @@ pub enum DataScanMode {
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum JsonLevel {
-    JSON_BASIC = 0,
+	JSON_BASIC = 0,
 	JSON_DETAILS = 1,
 	JSON_DETAILS2 = 2,
 	JSON_LVL_COUNT = 3,
@@ -104,7 +104,7 @@ pub enum JsonLevel {
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum ResultsFilter{
-    SHOW_NONE = 0,
+	SHOW_NONE = 0,
 	SHOW_ERRORS = 1,
 	SHOW_NOT_SUSPICIOUS = 2,
 	SHOW_SUSPICIOUS = 3,
@@ -124,34 +124,34 @@ pub enum ReportType {
 
 #[repr(C)]
 pub struct ParamString {
-    pub length: c_ulong,
-    pub buffer: *const c_char,
+	pub length: c_ulong,
+	pub buffer: *const c_char,
 }
 
 #[repr(C)]
 pub struct Params {
-    pub pid: c_ulong,
-    pub dotnet_policy: DotnetPolicy,
-    pub imprec_mode: ImpRecMode,
-    pub quiet: bool,
-    pub out_filter: OutputFilter,
-    pub no_hooks: bool,
-    pub shellcode: ShellcMode,
-    pub obfuscated: ObfuscMode,
-    pub threads: bool,
-    pub iat: IatScanMode,
-    pub data: DataScanMode,
-    pub minidump: bool,
-    pub rebase: bool,
-    pub dump_mode: DumpMode,
-    pub json_output: bool,
-    pub make_reflection: bool,
-    pub use_cache: bool,
-    pub json_lvl: JsonLevel,
-    pub results_filter: ResultsFilter,
-    pub output_dir: *const c_char,
-    pub modules_ignored: ParamString,
-    pub pattern_file: ParamString,
+	pub pid: c_ulong,
+	pub dotnet_policy: DotnetPolicy,
+	pub imprec_mode: ImpRecMode,
+	pub quiet: bool,
+	pub out_filter: OutputFilter,
+	pub no_hooks: bool,
+	pub shellcode: ShellcMode,
+	pub obfuscated: ObfuscMode,
+	pub threads: bool,
+	pub iat: IatScanMode,
+	pub data: DataScanMode,
+	pub minidump: bool,
+	pub rebase: bool,
+	pub dump_mode: DumpMode,
+	pub json_output: bool,
+	pub make_reflection: bool,
+	pub use_cache: bool,
+	pub json_lvl: JsonLevel,
+	pub results_filter: ResultsFilter,
+	pub output_dir: *const c_char,
+	pub modules_ignored: ParamString,
+	pub pattern_file: ParamString,
 }
 
 #[repr(C)]
@@ -186,8 +186,8 @@ type PESieveScanExT = unsafe extern "C" fn(
 ) -> Report;
 
 lazy_static! {
-    static ref lib: Library = {
-        let dll_path = env::var("PESIEVE_DIR").unwrap_or(".".to_string());
+	static ref lib: Library = {
+		let dll_path = env::var("PESIEVE_DIR").unwrap_or(".".to_string());
 
 		let dll_name = if cfg!(target_arch = "x86_64") {
 			"pe-sieve64.dll"
@@ -197,30 +197,30 @@ lazy_static! {
 			panic!("[!] Arch not supported!");
 		};
 
-        let full_path = Path::new(&dll_path).join(dll_name);
+		let full_path = Path::new(&dll_path).join(dll_name);
 
-        if !full_path.exists() {
-            panic!("[!] PESieve DLL not found.");
-        }
+		if !full_path.exists() {
+			panic!("[!] PESieve DLL not found.");
+		}
 
-        unsafe { 
+		unsafe { 
 			Library::new(full_path).expect("[!] Failed to load pe-sieve DLL.") 
 		}
-    };
+	};
 
 	static ref PESieve_version: Symbol<'static, &'static c_ulong> =  unsafe { 
 		lib.get(b"PESieve_version").expect("[!] Failed to load PESieve_version symbol") 
 	};
 
-    static ref PESieve_help: Symbol<'static, PesiveHelpT> = unsafe { 
+	static ref PESieve_help: Symbol<'static, PesiveHelpT> = unsafe { 
 		lib.get(b"PESieve_help").expect("[!] Failed to load PESieve_help symbol") 
 	};
 
-    static ref PESieve_scan: Symbol<'static, PESieveScanT> =  unsafe { 
+	static ref PESieve_scan: Symbol<'static, PESieveScanT> =  unsafe { 
 		lib.get(b"PESieve_scan").expect("[!] Failed to load PESieve_scan symbol") 
 	};
 
-    static ref PESieve_scan_ex: Symbol<'static, PESieveScanExT> =  unsafe { 
+	static ref PESieve_scan_ex: Symbol<'static, PESieveScanExT> =  unsafe { 
 		lib.get(b"PESieve_scan_ex").expect("[!] Failed to load PESieve_scan_ex symbol") 
 	};
 }
@@ -228,16 +228,17 @@ lazy_static! {
 fn version_to_str(version_val: u32) -> String {
 	assert!(version_val != 0);
 
-    let major = (version_val >> 24) & 0xFF;
-    let minor = (version_val >> 16) & 0xFF;
-    let patch = (version_val >> 8) & 0xFF;
-    let build = version_val & 0xFF;
-    
+	let major = (version_val >> 24) & 0xFF;
+	let minor = (version_val >> 16) & 0xFF;
+	let patch = (version_val >> 8) & 0xFF;
+	let build = version_val & 0xFF;
+
 	format!("{major}.{minor}.{patch}.{build}")
 }
 
 fn check_version() {
 	let version = ***PESieve_version;
+
 	if version < PESIEVE_MIN_VER || version > PESIEVE_MAX_VER {
 		let dll_version_str = version_to_str(version);
 		panic!("[!] The PE-sieve.dll version {} doesn't match the bindings version", dll_version_str);
@@ -271,7 +272,7 @@ pub fn pesieve_scan_ex(params: Params, rtype: ReportType, json_buf_size: usize) 
 			&mut buf_needed_size
 		)
 	};
-	
+
 	if buf_needed_size > json_buf.len() {
 		print!("[!] The provided buffer size is not enough. Need {} bytes.\n", buf_needed_size);
 	}
