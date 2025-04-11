@@ -1,0 +1,13 @@
+[package]
+name = "pesieve-rs"
+version = "0.1.0"
+description = "A Rust bind for PESieve"
+repository = "https://github.com/leandrofroes/pesieve-rs"
+edition = "2024"
+
+[dependencies]
+lazy_static = "1.5.0"
+libloading = "0.8.6"
+
+[[example]]
+name = "scan_proc"
