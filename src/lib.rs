@@ -1,5 +1,5 @@
 use std::env;
-use std::path::Path;
+use std::path::PathBuf;
 use lazy_static::lazy_static;
 use libloading::{Library, Symbol};
 use std::os::raw::{c_ulong, c_char};
@@ -187,7 +187,7 @@ type PESieveScanExT = unsafe extern "C" fn(
 
 lazy_static! {
 	static ref lib: Library = {
-		let dll_path = env::var("PESIEVE_DIR").unwrap_or(".".to_string());
+		let mut dll_path: PathBuf = env::current_dir().expect("[!] Failed to get current directory");
 
 		let dll_name = if cfg!(target_arch = "x86_64") {
 			"pe-sieve64.dll"
@@ -197,14 +197,21 @@ lazy_static! {
 			panic!("[!] Arch not supported!");
 		};
 
-		let full_path = Path::new(&dll_path).join(dll_name);
+		dll_path.push(dll_name);
 
-		if !full_path.exists() {
-			panic!("[!] PESieve DLL not found.");
+		if !dll_path.exists() {
+			dll_path = env::var("PESIEVE_DIR")
+				.expect("[!] PESIEVE_DIR not set and DLL not found in the project directory.")
+				.into();
+			dll_path.push(dll_name);
+
+			if !dll_path.exists(){
+				panic!("[!] PESieve DLL not found.");
+			}
 		}
 
 		unsafe { 
-			Library::new(full_path).expect("[!] Failed to load pe-sieve DLL.") 
+			Library::new(dll_path).expect("[!] Failed to load pe-sieve DLL.") 
 		}
 	};
 
